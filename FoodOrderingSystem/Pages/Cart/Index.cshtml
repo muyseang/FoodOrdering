@@ -9,7 +9,6 @@
 </form>
 
 <div class="cart-container">
-    <!-- Cart Header -->
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
             <h1 class="display-6 fw-bold text-dark mb-1">
@@ -39,7 +38,6 @@
 
     @if (Model.Cart.Count == 0)
     {
-        <!-- Empty Cart State -->
         <div class="empty-cart-container text-center py-5">
             <div class="empty-cart-icon mb-4">
                 <i class="fas fa-shopping-cart text-muted" style="font-size: 5rem; opacity: 0.3;"></i>
@@ -59,7 +57,6 @@
     else
     {
         <div class="row">
-            <!-- Cart Items -->
             <div class="col-lg-8">
                 <div class="cart-items-container">
                     @foreach (var item in Model.Cart)
@@ -68,7 +65,6 @@
                             <div class="card border-0 shadow-sm">
                                 <div class="card-body p-4">
                                     <div class="row align-items-center">
-                                        <!-- Food Image -->
                                         <div class="col-md-2 col-3 mb-3 mb-md-0">
                                             <div class="food-image-container" style="height: 80px; width: 80px; position: relative;">
                                                 @if (item.FoodItem != null && !string.IsNullOrEmpty(item.FoodItem.ImageUrl))
@@ -86,7 +82,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- Food Details -->
                                         <div class="col-md-4 col-9 mb-3 mb-md-0">
                                             <h5 class="fw-bold text-dark mb-1">@item.FoodName</h5>
                                             <p class="text-muted small mb-1">
@@ -95,7 +90,6 @@
                                             <p class="text-success fw-semibold mb-0">$@item.Price.ToString("F2") each</p>
                                         </div>
 
-                                        <!-- Quantity Controls -->
                                         <div class="col-md-3 col-6 mb-3 mb-md-0">
                                             <label class="form-label small text-muted fw-semibold">Quantity</label>
                                             <div class="quantity-controls d-flex align-items-center">
@@ -109,7 +103,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- Subtotal & Remove -->
                                         <div class="col-md-3 col-6">
                                             <div class="text-end">
                                                 <div class="subtotal-amount h5 fw-bold text-primary mb-2" id="subtotal-@item.Id">
@@ -127,7 +120,6 @@
                     }
                 </div>
 
-                <!-- Continue Shopping -->
                 <div class="continue-shopping mt-4">
                     <a asp-page="/Menu/Index" class="btn btn-outline-primary">
                         <i class="fas fa-arrow-left me-2"></i>Continue Shopping
@@ -135,7 +127,6 @@
                 </div>
             </div>
 
-            <!-- Order Summary Sidebar -->
             <div class="col-lg-4">
                 <div class="order-summary-container">
                     <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
@@ -145,7 +136,6 @@
                             </h5>
                         </div>
                         <div class="card-body p-4">
-                            <!-- Summary Items -->
                             <div class="order-summary-items mb-3">
                                 @foreach (var item in Model.Cart)
                                 {
@@ -161,7 +151,6 @@
 
                             <hr class="my-3">
 
-                            <!-- Pricing Breakdown -->
                             <div class="pricing-breakdown">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>Subtotal</span>
@@ -179,11 +168,10 @@
 
                             <hr class="my-3">
 
-            <!-- Total -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="fw-bold text-dark mb-0">Total</h5>
                 <h4 class="fw-bold text-primary mb-0" id="cart-total">$@((Model.Total * 1.10m).ToString("F2"))</h4>
-            </div>                            <!-- Promo Code -->
+            </div>                            
                             <div class="promo-code-section mb-4">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Promo code" id="promoCode">
@@ -194,7 +182,7 @@
                                 </small>
                             </div>
 
-                            <!-- Checkout Button -->
+                            
                             <div class="d-grid">
                                 <a asp-page="/Admin/Orders/Checkout" class="btn btn-success btn-lg py-3" id="checkoutBtn">
                                     <i class="fas fa-credit-card me-2"></i>Proceed to Checkout
@@ -204,7 +192,7 @@
                                 </a>
                             </div>
 
-                            <!-- Security Note -->
+                            
                             <div class="security-note text-center mt-3">
                                 <small class="text-muted">
                                     <i class="fas fa-shield-alt me-1"></i>Secure checkout with SSL encryption
@@ -221,7 +209,7 @@
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <script>
-        // Cart management functions
+        
         let cartItems = @Html.Raw(Json.Serialize(Model.Cart));
         const TAX_RATE = 0.10;
 
@@ -235,7 +223,7 @@
                 return;
             }
 
-            // Make AJAX call to update quantity
+            
             const formData = new FormData();
             formData.append('itemId', itemId);
             formData.append('quantity', newQuantity);
@@ -280,7 +268,7 @@
                     if (data.success) {
                         cartItems = cartItems.filter(i => i.id !== itemId);
                         
-                        // Remove from DOM
+                        
                         const itemElement = document.querySelector(`[data-item-id="${itemId}"]`);
                         if (itemElement) {
                             itemElement.style.transform = 'translateX(-100%)';
@@ -348,7 +336,7 @@
             document.getElementById('cart-tax').textContent = `$${tax.toFixed(2)}`;
             document.getElementById('cart-total').textContent = `$${total.toFixed(2)}`;
 
-            // Update summary items
+            
             cartItems.forEach(item => {
                 const summaryElement = document.getElementById(`summary-${item.id}`);
                 if (summaryElement) {
@@ -371,7 +359,7 @@
                 return;
             }
 
-            // Demo promo codes
+            
             const promoCodes = {
                 'SAVE10': { discount: 0.1, message: '10% discount applied!' },
                 'WELCOME': { discount: 0.15, message: '15% welcome discount applied!' },
@@ -381,7 +369,7 @@
             const promo = promoCodes[promoCode.toUpperCase()];
             if (promo) {
                 showToast(promo.message, 'success');
-                // You can implement actual discount logic here
+                
             } else {
                 showToast('Invalid promo code', 'error');
             }
@@ -418,7 +406,7 @@
             });
         }
 
-        // Checkout button animation
+        
         document.getElementById('checkoutBtn')?.addEventListener('click', function(e) {
             const loadingEl = this.querySelector('.checkout-loading');
             const iconEl = this.querySelector('.fas');
@@ -429,7 +417,7 @@
             }
         });
 
-        // Quantity button hover effects
+        
         document.querySelectorAll('.quantity-btn').forEach(btn => {
             btn.addEventListener('mouseenter', function() {
                 this.style.transform = 'scale(1.1)';
@@ -440,7 +428,7 @@
             });
         });
 
-        // Cart item animations
+        
         document.querySelectorAll('.cart-item-card').forEach((card, index) => {
             card.style.animationDelay = `${index * 0.1}s`;
             card.classList.add('animate-fadeInUp');

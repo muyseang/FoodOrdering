@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using FoodOrderingSystem.Data;  // adjust namespace as needed
-using FoodOrderingSystem.Models; // adjust namespace as needed
+using FoodOrderingSystem.Data;
+using FoodOrderingSystem.Models;
 using FoodOrderingSystem.Helpers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,10 +21,8 @@ namespace FoodOrderingSystem.Pages.Admin.FoodItems
 
         public async Task<IActionResult> OnGetAsync()
         {
-            // Check if user is logged in as admin
             if (!AuthHelper.IsAdmin(HttpContext))
             {
-                // Redirect to login page with return URL
                 return RedirectToPage("/Account/Login", new { returnUrl = "/Admin/FoodItems" });
             }
 

@@ -63,10 +63,8 @@ namespace FoodOrderingSystem.Pages.Account
                 return RedirectToPage("/Account/Login");
             }
 
-            // Update username
             user.Username = CurrentUser.Username;
 
-            // Update password if provided
             if (!string.IsNullOrEmpty(NewPassword))
             {
                 if (NewPassword != ConfirmPassword)
@@ -83,7 +81,6 @@ namespace FoodOrderingSystem.Pages.Account
                     return Page();
                 }
 
-                // Hash the new password
                 user.Password = BCrypt.Net.BCrypt.HashPassword(NewPassword);
             }
 
@@ -92,7 +89,6 @@ namespace FoodOrderingSystem.Pages.Account
                 _context.Update(user);
                 await _context.SaveChangesAsync();
                 
-                // Update session username
                 HttpContext.Session.SetString("Username", user.Username);
                 
                 SuccessMessage = "Profile updated successfully!";

@@ -25,13 +25,11 @@ namespace FoodOrderingSystem.Pages.Cart
             var userIdString = HttpContext.Session.GetString("UserId");
             if (string.IsNullOrEmpty(userIdString))
             {
-                // User not logged in - redirect to login page
                 return RedirectToPage("/Account/Login", new { returnUrl = "/Cart" });
             }
 
             if (int.TryParse(userIdString, out int userId))
             {
-                // Load cart items from database for the logged-in user
                 Cart = await _context.CartItems
                     .Include(c => c.FoodItem)
                     .Where(c => c.UserId == userId)

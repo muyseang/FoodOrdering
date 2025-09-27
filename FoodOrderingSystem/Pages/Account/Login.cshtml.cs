@@ -37,19 +37,16 @@ namespace FoodOrderingSystem.Pages.Account
                 return Page();
             }
 
-            // Set session data
             HttpContext.Session.SetInt32("UserId", user.Id);
             HttpContext.Session.SetString("UserId", user.Id.ToString());
             HttpContext.Session.SetString("Username", user.Username);
             HttpContext.Session.SetString("Role", user.Role);
             
-            // Redirect to return URL if provided, otherwise go to appropriate default page
             if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
             {
                 return Redirect(ReturnUrl);
             }
             
-            // Redirect based on role
             if (user.Role == "Admin")
             {
                 return RedirectToPage("/Admin/Index");

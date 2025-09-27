@@ -26,10 +26,8 @@ namespace FoodOrderingSystem.Pages.Account
                 return Page();
             }
 
-            // Hash the password
             User.Password = BCrypt.Net.BCrypt.HashPassword(User.Password);
             
-            // Set default role if not specified
             if (string.IsNullOrEmpty(User.Role))
             {
                 User.Role = "Customer";
@@ -38,7 +36,6 @@ namespace FoodOrderingSystem.Pages.Account
             _context.Users.Add(User);
             await _context.SaveChangesAsync();
             
-            // Auto-login the user after successful registration
             HttpContext.Session.SetInt32("UserId", User.Id);
             HttpContext.Session.SetString("UserId", User.Id.ToString());
             HttpContext.Session.SetString("Username", User.Username);

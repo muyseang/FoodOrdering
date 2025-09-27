@@ -16,11 +16,10 @@ namespace FoodOrderingSystem.Pages.Admin.FoodItems
         }
 
         [BindProperty]
-        public FoodItem FoodItem { get; set; }
+    public FoodItem FoodItem { get; set; } = new FoodItem();
 
         public IActionResult OnGet()
         {
-            // Only allow admin
             if (!AuthHelper.IsAdmin(HttpContext))
                 return RedirectToPage("/Account/Login");
             return Page();

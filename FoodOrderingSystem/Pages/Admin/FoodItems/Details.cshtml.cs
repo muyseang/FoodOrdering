@@ -20,7 +20,6 @@ namespace FoodOrderingSystem.Pages.Admin.FoodItems
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            // Check if user is logged in as admin
             if (!AuthHelper.IsAdmin(HttpContext))
             {
                 return RedirectToPage("/Account/Login", new { returnUrl = $"/Admin/FoodItems/Details?id={id}" });

@@ -8,7 +8,6 @@ namespace FoodOrderingSystem.Pages.Admin
     {
         public IActionResult OnGet()
         {
-            // Check if user is logged in as admin
             if (!AuthHelper.IsAdmin(HttpContext))
             {
                 return RedirectToPage("/Account/Login", new { returnUrl = "/Admin" });

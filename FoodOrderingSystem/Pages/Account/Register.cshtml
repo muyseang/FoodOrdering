@@ -7,7 +7,6 @@
 <div class="auth-container">
     <div class="container-fluid">
         <div class="row min-vh-100">
-            <!-- Left Side - Branding/Info -->
             <div class="col-lg-6 d-none d-lg-flex auth-brand-side">
                 <div class="d-flex flex-column justify-content-center align-items-center text-white p-5">
                     <div class="text-center mb-5">
@@ -32,21 +31,17 @@
                 </div>
             </div>
 
-            <!-- Right Side - Registration Form -->
             <div class="col-lg-6 d-flex align-items-center">
                 <div class="w-100 px-4 px-lg-5">
                     <div class="auth-form-container">
-                        <!-- Header -->
                         <div class="text-center mb-5">
                             <h2 class="fw-bold text-dark mb-2">Create Your Account</h2>
                             <p class="text-muted">Join us and start your culinary journey today</p>
                         </div>
 
-                        <!-- Registration Form -->
                         <form method="post" id="registerForm" novalidate>
                             <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none" id="validationSummary"></div>
 
-                            <!-- Username Field -->
                             <div class="form-group mb-4">
                                 <label asp-for="User.Username" class="form-label fw-semibold">
                                     <i class="fas fa-user me-2 text-primary"></i>Username
@@ -61,7 +56,6 @@
                                 <span asp-validation-for="User.Username" class="text-danger small"></span>
                             </div>
 
-                            <!-- Email Field -->
                             <div class="form-group mb-4">
                                 <label asp-for="User.Email" class="form-label fw-semibold">
                                     <i class="fas fa-envelope me-2 text-primary"></i>Email Address
@@ -76,7 +70,6 @@
                                 <span asp-validation-for="User.Email" class="text-danger small"></span>
                             </div>
 
-                            <!-- Password Field -->
                             <div class="form-group mb-4">
                                 <label asp-for="User.Password" class="form-label fw-semibold">
                                     <i class="fas fa-lock me-2 text-primary"></i>Password
@@ -100,7 +93,6 @@
                                 <span asp-validation-for="User.Password" class="text-danger small"></span>
                             </div>
 
-                            <!-- Confirm Password Field -->
                             <div class="form-group mb-4">
                                 <label class="form-label fw-semibold">
                                     <i class="fas fa-check-double me-2 text-primary"></i>Confirm Password
@@ -115,7 +107,6 @@
                                 <span class="text-danger small" id="confirmPasswordError"></span>
                             </div>
 
-                            <!-- Role Selection -->
                             <div class="form-group mb-4">
                                 <label asp-for="User.Role" class="form-label fw-semibold">
                                     <i class="fas fa-user-tag me-2 text-primary"></i>Account Type
@@ -141,7 +132,6 @@
                                 <span asp-validation-for="User.Role" class="text-danger small"></span>
                             </div>
 
-                            <!-- Terms and Conditions -->
                             <div class="form-check mb-4">
                                 <input class="form-check-input" type="checkbox" id="agreeTerms" required>
                                 <label class="form-check-label" for="agreeTerms">
@@ -150,7 +140,6 @@
                                 </label>
                             </div>
 
-                            <!-- Submit Button -->
                             <div class="d-grid mb-4">
                                 <button type="submit" class="btn btn-primary btn-lg py-3" id="submitBtn">
                                     <i class="fas fa-user-plus me-2"></i>Create Account
@@ -158,7 +147,6 @@
                                 </button>
                             </div>
 
-                            <!-- Login Link -->
                             <div class="text-center">
                                 <p class="text-muted">
                                     Already have an account? 
@@ -192,7 +180,7 @@
             const submitSpinner = document.getElementById('submitSpinner');
             const form = document.getElementById('registerForm');
 
-            // Toggle password visibility
+            
             togglePasswordBtn.addEventListener('click', function() {
                 const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                 passwordInput.setAttribute('type', type);
@@ -200,14 +188,14 @@
                 eyeIcon.classList.toggle('fa-eye-slash');
             });
 
-            // Password strength checker
+            
             passwordInput.addEventListener('input', function() {
                 const password = this.value;
                 const strength = calculatePasswordStrength(password);
                 updatePasswordStrengthUI(strength);
             });
 
-            // Confirm password validation
+            
             confirmPasswordInput.addEventListener('input', validatePasswordConfirmation);
             passwordInput.addEventListener('input', validatePasswordConfirmation);
 
@@ -260,27 +248,27 @@
                 }
             }
 
-            // Form submission handling
+            
             form.addEventListener('submit', function(e) {
-                // Validate password confirmation
+                
                 if (passwordInput.value !== confirmPasswordInput.value) {
                     e.preventDefault();
                     confirmPasswordError.textContent = 'Passwords do not match';
                     return;
                 }
 
-                // Show loading state
+                
                 submitBtn.disabled = true;
                 submitSpinner.classList.remove('d-none');
                 
-                // Re-enable after 3 seconds (in case of errors)
+                
                 setTimeout(() => {
                     submitBtn.disabled = false;
                     submitSpinner.classList.add('d-none');
                 }, 3000);
             });
 
-            // Input animations
+            
             const inputs = document.querySelectorAll('.form-control');
             inputs.forEach(input => {
                 input.addEventListener('focus', function() {

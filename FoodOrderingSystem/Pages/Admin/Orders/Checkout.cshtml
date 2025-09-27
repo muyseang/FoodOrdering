@@ -12,7 +12,7 @@
                     <h2 class="mb-0"><i class="fas fa-credit-card me-2"></i>Checkout</h2>
                 </div>
                 <div class="card-body">
-                    <!-- Order Summary -->
+                    
                     <div class="mb-4">
                         <h5 class="fw-bold mb-3">Order Summary</h5>
                         <div class="border rounded p-3 bg-light">
@@ -36,11 +36,11 @@
                         </div>
                     </div>
 
-                    <!-- Demo Payment Options -->
+                    
                     <div class="mb-4">
                         <h5 class="fw-bold mb-3"><i class="fas fa-credit-card me-2"></i>Payment Method (Demo)</h5>
                         <div class="row g-3">
-                            <!-- Demo Credit Cards -->
+                            
                             <div class="col-md-6">
                                 <div class="card demo-card h-100" onclick="selectDemoCard('visa')">
                                     <div class="card-body text-center">
@@ -83,11 +83,11 @@
                         </div>
                     </div>
 
-                    <!-- Payment Form -->
+                    
                     <form method="post" id="checkoutForm">
                         <input type="hidden" asp-for="PaymentInfo" id="paymentInfoHidden" />
                         
-                        <!-- Selected Payment Method Display -->
+                        
                         <div id="selectedPaymentMethod" class="mb-3 d-none">
                             <div class="alert alert-info">
                                 <i class="fas fa-info-circle me-2"></i>
@@ -95,7 +95,7 @@
                             </div>
                         </div>
 
-                        <!-- Demo Card Details Form -->
+                        
                         <div id="cardDetailsForm" class="mb-4 d-none">
                             <h6 class="fw-bold mb-3">Card Details (Demo - Any Values Work)</h6>
                             <div class="row g-3">
@@ -142,7 +142,7 @@
                             </div>
                         </div>
 
-        <!-- PayPal Demo Form -->
+        
         <div id="paypalForm" class="mb-4 d-none">
             <h6 class="fw-bold mb-3">PayPal Login (Demo)</h6>
             <div class="row g-3">
@@ -157,7 +157,7 @@
             </div>
         </div>
 
-        <!-- ABA Bank Demo Form -->
+        
         <div id="abaForm" class="mb-4 d-none">
             <h6 class="fw-bold mb-3">ABA Mobile Banking (Demo)</h6>
             <div class="row g-3">
@@ -278,16 +278,16 @@
     let selectedPaymentMethod = null;
     
     function selectDemoCard(method) {
-        // Remove previous selection
+        
         document.querySelectorAll('.demo-card').forEach(card => {
             card.classList.remove('selected');
         });
         
-        // Select current card
+        
         event.currentTarget.classList.add('selected');
         selectedPaymentMethod = method;
         
-        // Update hidden field
+        
         const paymentInfo = document.getElementById('paymentInfoHidden');
         const selectedMethodDiv = document.getElementById('selectedPaymentMethod');
         const selectedMethodText = document.getElementById('selectedMethodText');
@@ -297,7 +297,7 @@
         const paypalForm = document.getElementById('paypalForm');
         const abaForm = document.getElementById('abaForm');
         
-        // Hide all forms first
+        
         cardForm.classList.add('d-none');
         paypalForm.classList.add('d-none');
         abaForm.classList.add('d-none');
@@ -341,7 +341,7 @@
         btnText.textContent = `Process Payment ($${document.querySelector('[asp-for="Total"]')?.textContent || '@Model.Total.ToString("F2")'})`;
     }
     
-    // Form submission with demo payment processing
+    
     document.getElementById('checkoutForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -354,13 +354,13 @@
         const btnText = document.getElementById('btnText');
         const btnIcon = document.getElementById('btnIcon');
         
-        // Start processing animation
+        
         processBtn.disabled = true;
         processBtn.classList.add('payment-processing');
         btnIcon.innerHTML = '<div class="spinner-border spinner-border-sm me-2" role="status"></div>';
         btnText.textContent = 'Processing Payment...';
         
-        // Simulate payment processing
+        
         setTimeout(() => {
             btnText.textContent = 'Authorizing...';
         }, 1000);
@@ -370,37 +370,37 @@
         }, 2000);
         
         setTimeout(() => {
-            // Show success message briefly
+            
             processBtn.classList.remove('payment-processing');
             processBtn.classList.remove('btn-success');
             processBtn.classList.add('btn-primary');
             btnIcon.innerHTML = '<i class="fas fa-check me-2"></i>';
             btnText.textContent = 'Payment Successful!';
             
-            // Submit the form after animation
+            
             setTimeout(() => {
                 this.submit();
             }, 500);
         }, 3000);
     });
     
-    // Format card number input
+    
     document.getElementById('cardNumber')?.addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');
         value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
         e.target.value = value;
     });
     
-    // Only allow numbers for CVV
+    
     document.getElementById('cvv')?.addEventListener('input', function(e) {
         e.target.value = e.target.value.replace(/\D/g, '');
     });
     
-    // Format ABA phone number (Cambodia format)
+    
     document.getElementById('abaPhone')?.addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length <= 8) {
-            // Format as XX XXX XXX
+            
             if (value.length > 2 && value.length <= 5) {
                 value = value.slice(0, 2) + ' ' + value.slice(2);
             } else if (value.length > 5) {
@@ -410,12 +410,12 @@
         e.target.value = value;
     });
     
-    // Only allow numbers for ABA PIN
+    
     document.getElementById('abaPin')?.addEventListener('input', function(e) {
         e.target.value = e.target.value.replace(/\D/g, '');
     });
     
-    // Demo card hover effects
+    
     document.querySelectorAll('.demo-card').forEach(card => {
         card.addEventListener('mouseenter', function() {
             if (!this.classList.contains('selected')) {

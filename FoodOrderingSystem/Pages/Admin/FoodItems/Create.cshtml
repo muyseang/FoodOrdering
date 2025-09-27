@@ -7,7 +7,6 @@
 }
 
 <div class="container-fluid py-4">
-    <!-- Header -->
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
             <h1 class="h3 mb-1 text-gray-800">
@@ -22,7 +21,6 @@
         </a>
     </div>
 
-    <!-- Create Form -->
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card shadow-sm">
@@ -67,12 +65,11 @@
                                 </label>
                                 <select asp-for="FoodItem.Category" class="form-select">
                                     <option value="">Select Category</option>
-                                    <option value="Appetizers">🥗 Appetizers</option>
-                                    <option value="Main Courses">🍽️ Main Courses</option>
-                                    <option value="Desserts">🍰 Desserts</option>
-                                    <option value="Burgers">🍔 Burgers</option>
-                                    <option value="Pizza">🍕 Pizza</option>
-                                    <option value="Salads">🥙 Salads</option>
+                                    <option value="A La Carte">🍽️ A La Carte</option>
+                                    <option value="Snack">� Snack</option>
+                                    <option value="Fried Chicken">🍗 Fried Chicken</option>
+                                    <option value="Rice and Salad">🥗 Rice and Salad</option>
+                                    <option value="Coffee">☕ Coffee</option>
                                 </select>
                                 <span asp-validation-for="FoodItem.Category" class="text-danger small"></span>
                             </div>
@@ -82,9 +79,22 @@
                                     <i class="fas fa-image text-warning me-1"></i>
                                     Image URL
                                 </label>
-                                <input asp-for="FoodItem.ImageUrl" class="form-control" placeholder="https://example.com/image.jpg" />
+                                <input asp-for="FoodItem.ImageUrl" class="form-control" placeholder="https://example.com/image.jpg" id="imageUrlInput" />
                                 <span asp-validation-for="FoodItem.ImageUrl" class="text-danger small"></span>
                                 <div class="form-text">Enter a valid image URL for the food item</div>
+                                
+                                <div class="mt-3" id="imagePreviewContainer" style="display: none;">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-eye text-info me-1"></i>
+                                        Preview
+                                    </label>
+                                    <div class="border rounded p-2 bg-light">
+                                        <img id="imagePreview" src="" alt="Image Preview" class="img-fluid rounded" style="max-height: 200px; max-width: 100%; object-fit: cover;" />
+                                        <div class="mt-2">
+                                            <small class="text-muted" id="imageStatus">Loading image...</small>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -99,7 +109,6 @@
                             <div class="form-text">Provide an appetizing description that will entice customers</div>
                         </div>
 
-                        <!-- Action Buttons -->
                         <div class="d-flex gap-2 pt-3 border-top">
                             <button type="submit" class="btn btn-primary px-4">
                                 <i class="fas fa-save me-1"></i>
@@ -117,21 +126,104 @@
     </div>
 </div>
 
-<!-- Image Preview (Optional Enhancement) -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const imageUrlInput = document.querySelector('input[name="FoodItem.ImageUrl"]');
+    const imageUrlInput = document.getElementById('imageUrlInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+    const imageStatus = document.getElementById('imageStatus');
+    
+    let timeoutId;
     
     if (imageUrlInput) {
+        
+        imageUrlInput.addEventListener('input', function() {
+            clearTimeout(timeoutId);
+            const url = this.value.trim();
+            
+            if (!url) {
+                hideImagePreview();
+                return;
+            }
+            
+            timeoutId = setTimeout(() => {
+                loadImagePreview(url);
+            }, 500); // Wait 500ms after user stops typing
+        });
+        
+        
         imageUrlInput.addEventListener('blur', function() {
-            if (this.value && this.value.match(/\.(jpeg|jpg|gif|png)$/)) {
-                // Could add image preview functionality here
-                console.log('Valid image URL detected');
+            if (this.value.trim()) {
+                loadImagePreview(this.value.trim());
             }
         });
     }
     
-    // Form validation enhancement
+    function loadImagePreview(url) {
+        
+        if (!isValidUrl(url)) {
+            showImageError('Please enter a valid URL');
+            return;
+        }
+        
+        
+        showImageLoading();
+        
+        
+        const testImg = new Image();
+        
+        testImg.onload = function() {
+            imagePreview.src = url;
+            showImageSuccess('Image loaded successfully');
+        };
+        
+        testImg.onerror = function() {
+            showImageError('Failed to load image. Please check the URL or try a different image.');
+        };
+        
+        
+        setTimeout(() => {
+            if (!testImg.complete) {
+                showImageError('Image is taking too long to load. Please try a different URL.');
+            }
+        }, 10000); // 10 second timeout
+        
+        testImg.src = url;
+    }
+    
+    function isValidUrl(string) {
+        try {
+            new URL(string);
+            return true;
+        } catch (_) {
+            return false;
+        }
+    }
+    
+    function showImageLoading() {
+        imagePreviewContainer.style.display = 'block';
+        imagePreview.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzZiNzI4MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zNWVtIj5Mb2FkaW5nLi4uPC90ZXh0Pjwvc3ZnPg==';
+        imageStatus.textContent = 'Loading image...';
+        imageStatus.className = 'text-info';
+    }
+    
+    function showImageSuccess(message) {
+        imageStatus.textContent = message;
+        imageStatus.className = 'text-success';
+    }
+    
+    function showImageError(message) {
+        imagePreviewContainer.style.display = 'block';
+        imagePreview.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmVmMmYyIiBzdHJva2U9IiNmYjcxODUiIHN0cm9rZS13aWR0aD0iMiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNkYzI2MjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuMzVlbSI+SW1hZ2UgTm90IEZvdW5kPC90ZXh0Pjwvc3ZnPg==';
+        imageStatus.textContent = message;
+        imageStatus.className = 'text-danger';
+    }
+    
+    function hideImagePreview() {
+        imagePreviewContainer.style.display = 'none';
+    }
+    
+    
     const form = document.querySelector('form');
     form.addEventListener('submit', function(e) {
         const validationSummary = document.querySelector('[asp-validation-summary]');
@@ -230,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function() {
     border-left: 4px solid #dc2626;
 }
 
-/* Animation for form elements */
+ 
 .form-control, .form-select, .btn {
     animation: slideInUp 0.3s ease;
 }
@@ -244,6 +336,36 @@ document.addEventListener('DOMContentLoaded', function() {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+ 
+#imagePreviewContainer {
+    animation: fadeIn 0.3s ease;
+}
+
+#imagePreview {
+    border: 2px solid #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+#imagePreview:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bg-light {
+    background-color: #f8fafc !important;
 }
 </style>
 

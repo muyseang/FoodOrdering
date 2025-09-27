@@ -27,7 +27,6 @@ namespace FoodOrderingSystem.Pages.Menu
 
         public async Task<IActionResult> OnPostAddToCartAsync(int foodItemId, int quantity = 1)
         {
-            // Check if user is logged in
             var userIdString = HttpContext.Session.GetString("UserId");
             if (string.IsNullOrEmpty(userIdString))
             {
@@ -56,19 +55,16 @@ namespace FoodOrderingSystem.Pages.Menu
                 });
             }
 
-            // Check if item already exists in user's cart
             var existingCartItem = await _context.CartItems
                 .FirstOrDefaultAsync(c => c.UserId == userId && c.FoodItemId == foodItemId);
 
             if (existingCartItem != null)
             {
-                // Update existing item quantity
                 existingCartItem.Quantity += quantity;
                 _context.Update(existingCartItem);
             }
             else
             {
-                // Create new cart item
                 var newCartItem = new CartItem
                 {
                     UserId = userId,

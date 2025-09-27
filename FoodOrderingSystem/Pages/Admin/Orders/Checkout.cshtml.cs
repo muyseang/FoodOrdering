@@ -34,7 +34,6 @@ namespace FoodOrderingSystem.Pages.Admin.Orders
                 return;
             }
 
-            // Load cart from database
             Cart = await _context.CartItems
                 .Where(c => c.UserId == userId)
                 .ToListAsync();
@@ -48,7 +47,6 @@ namespace FoodOrderingSystem.Pages.Admin.Orders
                 return RedirectToPage("/Account/Login");
             }
 
-            // Load cart from database
             Cart = await _context.CartItems
                 .Where(c => c.UserId == userId)
                 .ToListAsync();
@@ -72,7 +70,6 @@ namespace FoodOrderingSystem.Pages.Admin.Orders
 
             _context.Orders.Add(order);
             
-            // Clear user's cart after order is placed
             _context.CartItems.RemoveRange(Cart);
             await _context.SaveChangesAsync();
 
